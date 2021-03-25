@@ -1,14 +1,13 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const ArtSchema = new Schema(
+const artSchema = new Schema(
     {
-    _user: {
+    creator: {
       type: Schema.Types.ObjectId,
       ref: "User",
     },
     pictureUrl: String,
-    artist: String,
     title: String,
     description: String,
     dimensions: [Number],
