@@ -6,8 +6,9 @@ const historySchema = new Schema(
 
 {
 purchasedArt: [{ type: Schema.Types.ObjectId, ref: "Art" }],
-buyer: [{ type: Schema.Types.ObjectId, ref: "User" }],
+buyer: { type: Schema.Types.ObjectId, ref: "User" },
 quantity: Number,
+date: Date
 }
 );
 
