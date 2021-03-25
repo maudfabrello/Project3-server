@@ -19,8 +19,8 @@ router.get("/", (req, res, next) => {
 // app.use("/api/artworks", artRouter);
 
 router.get("/:id", (req, res, next) => {
-  console.log(req.params)
-  Art.findByID(req.params.id)
+  // console.log(req.params)
+  Art.findById(req.params.id)
     .then((ArtDocument) => {
       res.status(200).json(ArtDocument)
     })
