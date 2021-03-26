@@ -91,7 +91,21 @@ router.patch("/:id", uploadToCloudinaryMiddleware.single("pictureUrl"), (req, re
   //}
 });
 
-//create
+router.delete("/:id", (req, res, next) => {
+  // let user = req.session.currentUser;
+  //  if (req.params.id._user === user) {
+
+  Art.findByIdAndDelete(req.params.id)
+  .then((createdArt) => {
+    res.status(204).json({ message: "Art deleted" });
+  })
+  .catch((error) => {
+    next(error);
+  });
+
+// }
+});
+
 
 
 
