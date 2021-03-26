@@ -32,14 +32,13 @@ router.get("/:id", (req, res, next) => {
 });
 
 router.post("/", uploadToCloudinaryMiddleware.single("pictureUrl"), (req, res, next) => {
-  let { price, description,title,lng,larg } = req.body;
+  let { artistName,price, description,title,lng,larg } = req.body;
    let pictureUrl = req.file.path;
   
 
   let creator = req.session.currentUser 
   console.log(creator)
   //populate?Visit.find({_user:user.toString()}).populate("_streetArt _user")
-
 
   const newArt = {
       dimensions: [lng,larg],
@@ -48,6 +47,7 @@ router.post("/", uploadToCloudinaryMiddleware.single("pictureUrl"), (req, res, n
       price,
       description,
       title,
+      artistName
 
   }
 
@@ -67,14 +67,17 @@ router.post("/", uploadToCloudinaryMiddleware.single("pictureUrl"), (req, res, n
 router.patch("/:id", uploadToCloudinaryMiddleware.single("pictureUrl"), (req, res, next) => {
   console.log(req.params);
   console.log(req.body);
-  let { price, description,title,lng,larg } = req.body;
+  let { artistName, price, description,title,lng,larg } = req.body;
   let pictureUrl = req.file.path;
   const updatedArt = {
+    artistName,
     dimensions: [lng,larg],
     pictureUrl: pictureUrl,
-    price,
-    description,
     title,
+    description,
+    price,
+    
+    
 
 }
   // if (req.body.name === "" || req.body.brand === "") {

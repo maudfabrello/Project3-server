@@ -3,14 +3,15 @@ const router = express.Router();
 const History = require("../models/History");
 
 //onclick function axios to this route
-router.post("/:id", (req, res, next) => {
+router.post("/", (req, res, next) => {
   
   let date = getDate();
+  let quantity=1;
  
- const newStreetArt = {
+ const newHistory = {
     purchasedArt:req.params.id,
-    buyer: req.session.currentUser.username,
-    quantity:1,
+    buyer: req.session.currentUser,
+    quantity:quantity,
     date: date
   }
 
@@ -18,7 +19,7 @@ router.post("/:id", (req, res, next) => {
  // type: Date,
   //default: Date.now
 
-  History.create(newStreetArt)
+  History.create(newHistory)
   .then((HDocument) => {
     res.status(200).json(HDocument);
   })
