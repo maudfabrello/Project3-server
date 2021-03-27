@@ -33,7 +33,7 @@ router.get("/:id", (req, res, next) => {
 
 router.post("/", uploadToCloudinaryMiddleware.single("pictureUrl"), (req, res, next) => {
   let { artistName,price, description,title,lng,larg } = req.body;
-   let pictureUrl = req.file.path;
+  //  let pictureUrl = req.file.path;
   
 
   let creator = req.session.currentUser 
@@ -42,7 +42,7 @@ router.post("/", uploadToCloudinaryMiddleware.single("pictureUrl"), (req, res, n
 
   const newArt = {
       dimensions: [lng,larg],
-      pictureUrl: pictureUrl,
+      // pictureUrl: pictureUrl,
       creator: creator,
       price,
       description,
@@ -51,9 +51,9 @@ router.post("/", uploadToCloudinaryMiddleware.single("pictureUrl"), (req, res, n
 
   }
 
-  // if (req.file) {
-  //   newStreetArt.pictureUrl = req.file.path;
-  // }
+  if (req.file) {
+    newArt.pictureUrl = req.file.path;
+  }
   Art.create(newArt)
   .then((createdArt) => {
     console.log(createdArt)
@@ -64,21 +64,22 @@ router.post("/", uploadToCloudinaryMiddleware.single("pictureUrl"), (req, res, n
   });
 });
 
-router.patch("/:id", uploadToCloudinaryMiddleware.single("pictureUrl"), (req, res, next) => {
+router.patch("/edit/:id", uploadToCloudinaryMiddleware.single("pictureUrl"), (req, res, next) => {
   console.log(req.params);
   console.log(req.body);
   let { artistName, price, description,title,lng,larg } = req.body;
-  let pictureUrl = req.file.path;
+  // let pictureUrl = req.file.path;
   const updatedArt = {
     artistName,
     dimensions: [lng,larg],
-    pictureUrl: pictureUrl,
+    // pictureUrl: pictureUrl,
     title,
     description,
-    price,
-    
-    
+    price, 
 
+}
+if (req.file) {
+  updatedArt.pictureUrl = req.file.path;
 }
   // if (req.body.name === "" || req.body.brand === "") {
   //   res.status(400).json({ message: "Name or Brand should not be empty" });
