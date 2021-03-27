@@ -32,28 +32,28 @@ router.get("/:id", (req, res, next) => {
 });
 
 router.post("/", uploadToCloudinaryMiddleware.single("pictureUrl"), (req, res, next) => {
-  let { price, description,title,lng,larg } = req.body;
-   let pictureUrl = req.file.path;
+  let { artistName,price, description,title,lng,larg } = req.body;
+  //  let pictureUrl = req.file.path;
   
 
   let creator = req.session.currentUser 
   console.log(creator)
   //populate?Visit.find({_user:user.toString()}).populate("_streetArt _user")
 
-
   const newArt = {
       dimensions: [lng,larg],
-      pictureUrl: pictureUrl,
+      // pictureUrl: pictureUrl,
       creator: creator,
       price,
       description,
       title,
+      artistName
 
   }
 
-  // if (req.file) {
-  //   newStreetArt.pictureUrl = req.file.path;
-  // }
+  if (req.file) {
+    newArt.pictureUrl = req.file.path;
+  }
   Art.create(newArt)
   .then((createdArt) => {
     console.log(createdArt)
@@ -64,18 +64,22 @@ router.post("/", uploadToCloudinaryMiddleware.single("pictureUrl"), (req, res, n
   });
 });
 
-router.patch("/:id", uploadToCloudinaryMiddleware.single("pictureUrl"), (req, res, next) => {
+router.patch("/edit/:id", uploadToCloudinaryMiddleware.single("pictureUrl"), (req, res, next) => {
   console.log(req.params);
   console.log(req.body);
-  let { price, description,title,lng,larg } = req.body;
-  let pictureUrl = req.file.path;
+  let { artistName, price, description,title,lng,larg } = req.body;
+  // let pictureUrl = req.file.path;
   const updatedArt = {
+    artistName,
     dimensions: [lng,larg],
-    pictureUrl: pictureUrl,
-    price,
-    description,
+    // pictureUrl: pictureUrl,
     title,
+    description,
+    price, 
 
+}
+if (req.file) {
+  updatedArt.pictureUrl = req.file.path;
 }
   // if (req.body.name === "" || req.body.brand === "") {
   //   res.status(400).json({ message: "Name or Brand should not be empty" });
@@ -91,7 +95,21 @@ router.patch("/:id", uploadToCloudinaryMiddleware.single("pictureUrl"), (req, re
   //}
 });
 
-//create
+router.delete("/:id", (req, res, next) => {
+  // let user = req.session.currentUser;
+  //  if (req.params.id._user === user) {
+
+  Art.findByIdAndDelete(req.params.id)
+  .then((createdArt) => {
+    res.status(204).json({ message: "Art deleted" });
+  })
+  .catch((error) => {
+    next(error);
+  });
+
+// }
+});
+
 
 
 

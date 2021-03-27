@@ -3,10 +3,12 @@ const Schema = mongoose.Schema;
 
 const artSchema = new Schema(
     {
+      
     creator: {
       type: Schema.Types.ObjectId,
       ref: "User",
     },
+    artistName:String,
     pictureUrl: String,
     title: String,
     description: String,
