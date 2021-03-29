@@ -98,7 +98,7 @@ if (req.file) {
 router.delete("/:id", (req, res, next) => {
   // let user = req.session.currentUser;
   //  if (req.params.id._user === user) {
-
+  console.log("BIBI",req.params.id);
   Art.findByIdAndDelete(req.params.id)
   .then((createdArt) => {
     res.status(204).json({ message: "Art deleted" });
