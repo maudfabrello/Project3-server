@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const History = require("../models/History");
+const Art = require("../models/Art");
 
-router.get("/my-history/purchasedArt", (req, res, next) => {
-  History.find({ buyer: req.session.currentUser._id })
+router.get("/myhistory/purchasedArt", (req, res, next) => {
+  History.find({ buyer: req.session.currentUser })
    .populate("purchasedArt")
     .then((historyDocuments) => {
       res.status(200).json(historyDocuments);
@@ -12,8 +13,11 @@ router.get("/my-history/purchasedArt", (req, res, next) => {
 
    
 });
-router.get("/my-history/createdArt", (req, res, next) => {
-  Art.find({ creator: req.session.currentUser._id })
+
+router.get("/myhistory/createdArt", (req, res, next) => {
+  let creator = req.session.currentUser;
+  console.log("BIBI",creator);
+  Art.find({ creator: creator.toString() })
   .then((artworkDocuments) => {
     res.status(200).json(artworkDocuments);
   })
