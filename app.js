@@ -50,12 +50,23 @@ app.use("/api/auth", authRouter);
 app.use("/api/artworks", artRouter);
 app.use("/api", historyRouter);
 
+if (process.env.NODE_ENV === "production") {
+  app.use("*", (req, res, next) => {
+    // If no routes match, send them the React HTML.
+    res.sendFile(__dirname + "/public/index.html");
+  });
+}
+
+
 // 404 Middleware
 app.use((req, res, next) => {
   const error = new Error("Ressource not found.");
   error.status = 404;
   next(error);
 });
+
+
+
 
 // Error handler middleware
 // If you pass an argument to your next function in any of your routes or middlewares
