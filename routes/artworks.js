@@ -65,8 +65,8 @@ router.post("/", uploadToCloudinaryMiddleware.single("pictureUrl"), (req, res, n
 });
 
 router.patch("/edit/:id", uploadToCloudinaryMiddleware.single("pictureUrl"), (req, res, next) => {
-  console.log(req.params);
-  console.log(req.body);
+  console.log("REQPARAMAS", req.params);
+  console.log("REQBODY", req.body);
   let { artistName, price, description,title,lng,larg } = req.body;
   // let pictureUrl = req.file.path;
   const updatedArt = {
