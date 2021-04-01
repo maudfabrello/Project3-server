@@ -8,12 +8,12 @@ const User = require("../models/User");
 
 let userDocs = [
     new User({
-      username: "alice",
+      firstName: "alice",
       email: "alice@gmail.com",
       password: bcrypt.hashSync("alice", bcrypt.genSaltSync(bcryptSalt)),
     }),
     new User({
-      username: "bob",
+      firstName: "bob",
       email: "bob@gmail.com",
       password: bcrypt.hashSync("bob", bcrypt.genSaltSync(bcryptSalt)),
     }),
