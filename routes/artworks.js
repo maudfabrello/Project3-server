@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Art = require("../models/Art");
 const uploadToCloudinaryMiddleware = require("../config/cloudinaryConfig");
-//créer config cloudinary
+const isLoggedIn = require("./../middlewares/isLoggedIn");
 
 router.get("/", (req, res, next) => {
   console.log("from react");
@@ -12,38 +12,37 @@ router.get("/", (req, res, next) => {
       res.json(ADocuments);
     })
     .catch((error) => {
-      console.log(error);
+      next(error);
     });
 });
 
 // PREFIX FROM APP.JS
 // app.use("/api/artworks", artRouter);
 
-router.get("/:id", (req, res, next) => {
+router.get("/:id", isLoggedIn, (req, res, next) => {
   // console.log(req.params)
   Art.findById(req.params.id)
     .then((ArtDocument) => {
       res.status(200).json(ArtDocument);
     })
     .catch((error) => {
-      console.log(error);
+      next(error);
+      //ERROR HANDLING THROUGH MIDDLEWARE IN APP.JS
     });
 });
 
+//SEND DATA FROM THE CREATE FORM TO THE DATABASE /DESTRUCTURING REQ.BODY TO INSERT IT IN THE DATABASE
 router.post(
   "/",
   uploadToCloudinaryMiddleware.single("pictureUrl"),
+  isLoggedIn,
   (req, res, next) => {
     let { artistName, price, description, title, lng, larg } = req.body;
-    //  let pictureUrl = req.file.path;
-
     let creator = req.session.currentUser;
     console.log(creator);
-    //populate?Visit.find({_user:user.toString()}).populate("_streetArt _user")
 
     const newArt = {
       dimensions: [lng, larg],
-      // pictureUrl: pictureUrl,
       creator: creator,
       price,
       description,
@@ -65,18 +64,19 @@ router.post(
   }
 );
 
+//SEND DATA FROM THE UPDATE FORM TO THE DATABASE /DESTRUCTURING REQ.BODY TO INSERT IT IN THE DATABASE
 router.patch(
   "/edit/:id",
   uploadToCloudinaryMiddleware.single("pictureUrl"),
+  isLoggedIn,
   (req, res, next) => {
     console.log("REQPARAMAS", req.params);
     console.log("REQBODY", req.body);
     let { artistName, price, description, title, lng, larg } = req.body;
-    // let pictureUrl = req.file.path;
+
     const updatedArt = {
       artistName,
       dimensions: [lng, larg],
-      // pictureUrl: pictureUrl,
       title,
       description,
       price,
@@ -98,7 +98,7 @@ router.patch(
   }
 );
 
-router.delete("/:id", (req, res, next) => {
+router.delete("/:id", isLoggedIn, (req, res, next) => {
   // let user = req.session.currentUser;
   //  if (req.params.id._user === user) {
   console.log("BIBI FROM DELETE ARTWORKS ROUTE :", req.params.id);
@@ -109,8 +109,6 @@ router.delete("/:id", (req, res, next) => {
     .catch((error) => {
       next(error);
     });
-
-  // }
 });
 
 module.exports = router;

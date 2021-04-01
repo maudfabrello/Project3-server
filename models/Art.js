@@ -14,9 +14,7 @@ const artSchema = new Schema(
     description: String,
     dimensions: [Number],
     price: Number,
-    // isPurchased:
-    // Buyer
-    // quantity
+  
   },
   { timestamps: true }
 );
