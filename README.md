@@ -29,7 +29,7 @@ Credentials: testapp@gmail.com / Password: testapp
 
 
 
-## Server side
+## Client side
 
 #### Check it out [here!](https://github.com/maudfabrello/Project3-client)
 
